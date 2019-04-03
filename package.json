@@ -1,0 +1,15 @@
+{
+  "name": "graphql-event",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/HongThaiPham/graphql-event.git",
+  "author": "Leo Pham <hongthaipro@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
