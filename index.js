@@ -2,13 +2,16 @@
  * @Author: Leo Pham
  * @Date: 2019-04-03 21:28:21
  * @Last Modified by: Leo Pham
- * @Last Modified time: 2019-04-03 21:55:11
+ * @Last Modified time: 2019-04-03 23:01:58
  */
 const express = require("express");
 const bodyParser = require("body-parser");
 
 const grapqlHttp = require("express-graphql");
 const { buildSchema } = require("graphql");
+
+const mongoose = require("mongoose");
+const Event = require("./models/event");
 
 const app = express();
 
@@ -49,22 +52,48 @@ app.use(
     `),
     rootValue: {
       events: args => {
-        return ["a", "b", "c", "d"];
+        Event.find()
+          .then(events => {
+            return events.map(event => {
+              return { ...event._doc, _id: event.id };
+            });
+          })
+          .catch(err => {
+            throw err;
+          });
       },
       createEvent: args => {
-        const event = {
-          _id: Math.random().toString(),
+        const event = new Event({
           title: args.eventInput.title,
           description: args.eventInput.description,
           date: new Date(args.eventInput.date)
-        };
-        return event;
+        });
+        event
+          .save()
+          .then(result => {
+            return { ...result._doc, _id: result.id };
+          })
+          .catch(err => {
+            throw err;
+          });
       }
     },
     graphiql: true
   })
 );
 
-app.listen(3000, () => {
-  console.log("app running ...");
-});
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.MONGO_PWD}:${
+      process.env.MONGO_USER
+    }@cluster0-tghgo.mongodb.net/${process.env.MONGO_DB}?authSource=admin`,
+    { useNewUrlParser: true }
+  )
+  .then(() => {
+    app.listen(3000, () => {
+      console.log("app running ...");
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });
