@@ -2,7 +2,7 @@
  * @Author: Leo Pham
  * @Date: 2019-04-03 21:28:21
  * @Last Modified by: Leo Pham
- * @Last Modified time: 2019-04-03 21:42:53
+ * @Last Modified time: 2019-04-03 21:49:05
  */
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -22,8 +22,15 @@ app.use(
   "/graphql",
   grapqlHttp({
     schema: buildSchema(`
+        type Event {
+            _id: ID!
+            name: String!
+            description: String!
+            date: String!
+        }
+
         type RootQuery {
-            events: [String!]!
+            events: [Event!]!
         }
 
         type RootMutation {
