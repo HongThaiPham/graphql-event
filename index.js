@@ -2,7 +2,7 @@
  * @Author: Leo Pham
  * @Date: 2019-04-03 21:28:21
  * @Last Modified by: Leo Pham
- * @Last Modified time: 2019-04-03 21:49:05
+ * @Last Modified time: 2019-04-03 21:55:11
  */
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -24,17 +24,22 @@ app.use(
     schema: buildSchema(`
         type Event {
             _id: ID!
-            name: String!
+            title: String!
             description: String!
             date: String!
         }
 
+        input EventInput {
+            title: String!
+            description: String!
+            date: String!
+        }
         type RootQuery {
             events: [Event!]!
         }
 
         type RootMutation {
-            createEvent(name: String): String
+            createEvent(eventInput: EventInput): Event
         }
 
         schema {
@@ -47,8 +52,13 @@ app.use(
         return ["a", "b", "c", "d"];
       },
       createEvent: args => {
-        const eventName = args.name;
-        return eventName;
+        const event = {
+          _id: Math.random().toString(),
+          title: args.eventInput.title,
+          description: args.eventInput.description,
+          date: new Date(args.eventInput.date)
+        };
+        return event;
       }
     },
     graphiql: true
