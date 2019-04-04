@@ -1,7 +1,7 @@
 {
   "env": {
     "MONGO_USER": "graphqlevent",
-    "MONGO_PWD": "V5xMX07eSpFDUvLl",
+    "MONGO_PWD": "VgZLum5gcsNyq5IX",
     "MONGO_DB": "graphql-events"
   }
 }

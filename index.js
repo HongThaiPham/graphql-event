@@ -1,8 +1,8 @@
 /*
  * @Author: Leo Pham
  * @Date: 2019-04-03 21:28:21
- * @Last Modified by: Leo Pham
- * @Last Modified time: 2019-04-03 23:01:58
+ * @Last Modified by: leopham - hongthaipro@gmail.com
+ * @Last Modified time: 2019-04-04 08:54:00
  */
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -52,7 +52,7 @@ app.use(
     `),
     rootValue: {
       events: args => {
-        Event.find()
+        return Event.find()
           .then(events => {
             return events.map(event => {
               return { ...event._doc, _id: event.id };
@@ -68,9 +68,10 @@ app.use(
           description: args.eventInput.description,
           date: new Date(args.eventInput.date)
         });
-        event
+        return event
           .save()
           .then(result => {
+            console.log(result);
             return { ...result._doc, _id: result.id };
           })
           .catch(err => {
@@ -84,9 +85,9 @@ app.use(
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_PWD}:${
-      process.env.MONGO_USER
-    }@cluster0-tghgo.mongodb.net/${process.env.MONGO_DB}?authSource=admin`,
+    `mongodb+srv://${process.env.MONGO_USER}:${
+      process.env.MONGO_PWD
+    }@cluster0-tghgo.mongodb.net/${process.env.MONGO_DB}?authSource`,
     { useNewUrlParser: true }
   )
   .then(() => {
