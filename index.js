@@ -2,7 +2,7 @@
  * @Author: Leo Pham
  * @Date: 2019-04-03 21:28:21
  * @Last Modified by: leopham - hongthaipro@gmail.com
- * @Last Modified time: 2019-04-04 14:01:51
+ * @Last Modified time: 2019-04-04 15:51:41
  */
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -19,6 +19,17 @@ app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send("Hello");
+});
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
 });
 
 app.use(isAuth);
