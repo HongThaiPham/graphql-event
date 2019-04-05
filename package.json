@@ -6,7 +6,8 @@
   "author": "Leo Pham <hongthaipro@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start":"node index.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.5",
